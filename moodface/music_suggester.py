@@ -22,14 +22,19 @@ def suggest_music(mood):
     query = MOOD_PLAYLISTS.get(mood.lower(), 'chill music')
     results = sp.search(q=query, type='playlist', limit=5)
     playlists = results['playlists']['items']
-
     print(f"\nMood detected: {mood}")
     print("Suggested playlists:")
+    result = []
     for i, playlist in enumerate(playlists):
         if playlist is None:
             continue
         spotify_url = (playlist.get('external_urls') or {}).get('spotify', 'URL not available')
         print(f"{i+1}. {playlist['name']} - {spotify_url}")
+        result.append({
+            'name': playlist['name'],
+            'url': spotify_url
+        })
+    return result
 
 if __name__ == "__main__":
     for mood in MOOD_PLAYLISTS:
